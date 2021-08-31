@@ -1,0 +1,19 @@
+body {
+  font-family: sans-serif;
+}
+
+header, main, footer {
+  max-width: 768px;
+  margin: auto;
+}
+
+a[href] {
+  text-decoration: none;
+}
+a[href]:hover, a[href]:focus {
+  text-decoration: underline;
+}
+
+pre .tag { color: #0047f4; }
+pre .attr { color: #6d2f00; }
+pre .str { color: #005300; }

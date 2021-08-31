@@ -5,22 +5,98 @@
   <title>References</title>
   <meta content="Matheus Avellar" name="author">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-header, main, footer {
-  max-width: 768px;
-  margin: auto;
-}
-  </style>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
   <header>
-    <h1> Awesome Article </h1>
+    <h1> References Web Component </h1>
     <p>
-      This is a great article, written by me, Author McAuthorface.
+      Check out the repository at <a href="https://github.com/MatheusAvellar/references-webcomponent">github.com/MatheusAvellar/references-webcomponent</a>.
     </p>
   </header>
   <main>
-    <h2> Content </h2>
+    <h2> What is this? </h2>
+    <p>
+      This is an experimental pair of Web Components for citing and referencing
+      sources in a wiki-like manner.
+    </p>
+    <hr>
+    <h3>cite-web</h3>
+    <p>
+      To cite documents, the <code>cite-web</code> element is used:
+    </p>
+    <pre>
+<span class="tag">&lt;cite-web</span>
+  <span class="attr">url</span>=<span class="str">"https://en.wikipedia.org/wiki/Wikipedia:Citing_sources"</span>
+  <span class="attr">author</span>=<span class="str">"Wikipedia Collaborators"</span>
+  <span class="attr">title</span>=<span class="str">"Wikipedia:Citing sources"</span>
+  <span class="attr">publisher</span>=<span class="str">"Wikipedia"</span>
+  <span class="attr">location</span>=<span class="str">"United States"</span>
+  <span class="attr">date</span>=<span class="str">"2021-08-18"</span>
+  <span class="attr">access-date</span>=<span class="str">"2021-08-31"</span><span class="tag">&gt;&lt;/cite-web&gt;</span></pre>
+    <p>
+      That generates the following inline citation: <cite-web url="https://en.wikipedia.org/wiki/Wikipedia:Citing_sources"
+      author="Wikipedia Collaborators" title="Wikipedia:Citing sources"
+      publisher="Wikipedia" location="United States" date="2021-08-18"
+      access-date="2021-08-31"></cite-web> Citation IDs are automatically
+      incremented. Multiple inline citations for the same reference can be made,
+      by using the <code>name</code> attribute. First, declare it with the
+      attribute:
+    </p>
+    <pre>
+<span class="tag">&lt;cite-web</span>
+  <span class="attr">url</span>=<span class="str">"https://google.com"</span>
+  <span class="attr">title</span>=<span class="str">"Google Search"</span>
+  <span class="attr">...</span>
+  <span class="attr">name</span>=<span class="str">"google"</span><span class="tag">&gt;&lt;/cite-web&gt;</span></pre>
+    <p>
+      Then, to reuse that same citation, you only need the <code>name</code>
+      attribute, and not any other:
+    </p>
+    <pre>
+<span class="tag">&lt;cite-web</span> <span class="attr">name</span>=<span class="str">"google"</span><span class="tag">&gt;&lt;/cite-web&gt;</span></pre>
+    <p>
+      That way, the IDs won't be incremented, and all citations will point to
+      the same reference: declaration,<cite-web url="https://google.com"
+      title="Google Search" publisher="Google" name="google"></cite-web> reuse,<cite-web
+      name="google"></cite-web> reuse.<cite-web name="google"></cite-web>
+    </p>
+    <hr>
+    <h3>references-list</h3>
+    <p>
+      At the bottom of the document, the <code>references-list</code> element
+      must be placed to generate the list; nothing is guaranteed to work
+      properly if you use multiple <code>references-list</code> elements in the
+      same page.
+    </p>
+    <p>
+      The shadow DOM, used by custom elements, doesn't inherit the page's style.
+      To add custom styling to the <code>cite-web</code> and <code>references-list</code>
+      elements, simply add a <code>style</code> or <code>link</code> tag inside
+      the <code>references-list</code> element, with the attribute
+      <code>slot="style"</code>, like this:
+    </p>
+    <pre>
+<span class="tag">&lt;references-list&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"./style.css"</span> <span class="attr">slot</span>=<span class="str">"style"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/references-list&gt;</span></pre>
+    <p>
+      Have multiple styles? Not to worry. You can use a dummy <code>span</code>
+      element with <code>slot="style"</code>, and add your multiple styles there:
+    </p>
+    <pre>
+<span class="tag">&lt;references-list&gt;
+  &lt;span</span> <span class="attr">slot</span>=<span class="str">"style"</span><span class="tag">&gt;
+    &lt;link</span> <span class="attr">rel</span>=<span class="str">"stylesheet"</span> <span class="attr">href</span>=<span class="str">"./style.css"</span><span class="tag">&gt;
+    &lt;style&gt;</span>a[href] { color: #0645ad; }<span class="tag">&lt;/style&gt;
+  &lt;/span&gt;
+&lt;/references-list&gt;</span></pre>
+    <p>
+      Styles placed inside <code>references-list</code> will be automatically
+      cloned to all <code>cite-web</code> elements.
+    </p>
+    <hr>
+    <h2> Demo </h2>
     <p>
       The Sun is hot.<cite-web url="https://www.nasa.gov/sun" author="Brian Dunbar"
       title="The Sun | NASA" publisher="National Aeronautics and Space Administration"
@@ -36,7 +112,7 @@ header, main, footer {
       consequat.<cite-web name="banana"></cite-web>
     </p>
     <p>
-      Duis aute irure dolor in reprehenderit<cite-web name="google" url="http://google.com" publisher="Google"></cite-web>
+      Duis aute irure dolor in reprehenderit<cite-web name="google"></cite-web>
       in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
       sint occaecat cupidatat non proident,<cite-web title="The Good Book" author="Author McAuthorface"
       publisher="O'Reilly" date="2010"></cite-web> sunt in culpa qui officia deserunt
@@ -53,21 +129,24 @@ header, main, footer {
       aliquip ex ea commodo consequat.<cite-web name="my-book"></cite-web> Duis
       aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
       fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-      sunt in culpa qui officia deserunt mollit anim id est laborum.<cite-web name="google"></cite-web>
+      sunt in culpa qui officia deserunt mollit anim id est laborum.<cite-web
+      name="google"></cite-web><cite-web name="banana"></cite-web>
     </p>
   </main>
   <footer>
     <h2> References </h2>
-    <!-- Auto-generated list of inline references -->
-    <references-list></references-list>
-    <h2> Bibliography </h2>
-    <!-- Manually created list of general references -->
-    <ul>
-      <li>
-        Author McAuthorface (2020). <b>The Great Book</b>. <i>O'Reilly</i>.
-      </li>
-    </ul>
+    <references-list>
+      <span slot="style">
+        <link rel="stylesheet" href="./style.css">
+        <style>a[href] { color: #0645ad; }</style>
+      </span>
+    </references-list>
   </footer>
+  <hr>
+  <div style="height:90vh;display:flex;justify-content:center;align-items:center;font-style:italic">
+    <!-- Element used merely for spacing, so linking can be appreciated better -->
+    <a href="https://en.wikipedia.org/wiki/Intentionally_blank_page">This page intentionally left blank.</a>
+  </div>
   <script src="cite-web.js"></script>
   <script src="references-list.js"></script>
 </body>

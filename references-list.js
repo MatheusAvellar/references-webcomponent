@@ -7,14 +7,23 @@ class ReferencesElement extends HTMLElement {
     self = super();
 
     const shadow = this.attachShadow({ mode: "open" });
+
+    const default_css = document.createElement("style");
+    default_css.textContent = 
+      "li:focus, li:focus-within {"
+    +   "background-color: rgb(150,216,255,.4);"
+    + "}"
+    + "[slot=\"style\"] {"
+    +   "display: none;"
+    + "}";
+    shadow.appendChild(default_css);
+
+    const custom_css = document.createElement("slot");
+    custom_css.setAttribute("name", "style");
+    shadow.appendChild(custom_css);
+
     const ol = document.createElement("ol");
     shadow.appendChild(ol);
-
-    const css = document.createElement("style");
-    css.textContent = `
-a[href] { text-decoration: none; }
-a[href]:hover, a[href]:focus { text-decoration: underline; }`;
-    shadow.appendChild(css);
   }
 
   getKey(key) {
@@ -28,6 +37,10 @@ a[href]:hover, a[href]:focus { text-decoration: underline; }`;
   }
 
   connectedCallback() {
+    const custom_css = self.querySelector("[slot]");
+    if(custom_css)
+      self.shadowRoot.appendChild(custom_css);
+
     let ref_count = 0;
     [...document.querySelectorAll("cite-web")].forEach(e => {
       const name = e.getAttribute("name");
@@ -60,6 +73,7 @@ a[href]:hover, a[href]:focus { text-decoration: underline; }`;
   addCitation(element, id) {
     const li = document.createElement("li");
     li.setAttribute("id", `ref${id}`);
+    li.setAttribute("tabindex", "0");
 
     const TITLE_MISSING = "[missing title]";
 
@@ -91,9 +105,6 @@ a[href]:hover, a[href]:focus { text-decoration: underline; }`;
 
           anchor.setAttribute("href", url);
           anchor.textContent = title;
-          // Red coloring if we're missing the title
-          if(title == TITLE_MISSING)
-            anchor.style.color = "red";
 
         b.appendChild(anchor);
 
@@ -102,9 +113,6 @@ a[href]:hover, a[href]:focus { text-decoration: underline; }`;
     } else {
       const b = document.createElement("b");
       b.textContent = title;
-      // Red coloring if we're missing the title
-      if(title == TITLE_MISSING)
-        b.style.color = "red";
       li.appendChild(b);
       done["title"] = true;
     }
