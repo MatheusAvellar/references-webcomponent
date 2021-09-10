@@ -14,3 +14,8 @@ This repo contains two Web Components:
 * Barely works without JavaScript; when [:has](https://developer.mozilla.org/en-US/docs/Web/CSS/:has)
 finally drops, and with a better support for [attr()](https://developer.mozilla.org/en-US/docs/Web/CSS/attr()),
 that might change
+
+## TODO
+
+* Implemenet cute '↑' thing that Wikipedia does on references list;
+* If a user comes to the page with `#refXX` already set, perhaps take them to the reference?
