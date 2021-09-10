@@ -1,0 +1,57 @@
+:root {
+  counter-reset: citation 0;
+}
+cite-web:not(:defined) {
+  display: inline-block;
+  color: #555;
+  vertical-align: super;
+  font-size: 75%;
+}
+cite-web:not(:defined):not([name])[publisher]::after {
+  counter-increment: citation;
+  content: "[" counter(citation) ": " attr(publisher) "]";
+}
+cite-web:not(:defined):not([name])[date]::after {
+  counter-increment: citation;
+  content: "[" counter(citation) ": " attr(date) "]";
+}
+cite-web:not(:defined):not([name])[author]::after {
+  counter-increment: citation;
+  content: "[" counter(citation) ": " attr(author) "]";
+}
+cite-web:not(:defined):not([name]):not([author])[publisher][date]::after {
+  counter-increment: citation;
+  content: "[" counter(citation) ": " attr(publisher) ", " attr(date) "]";
+}
+cite-web:not(:defined):not([name])[author][date]::after {
+  counter-increment: citation;
+  content: "[" counter(citation) ": " attr(author) ", " attr(date) "]";
+}
+
+cite-web:not(:defined)[publisher]::after {
+  counter-increment: citation;
+  content: "['" attr(name) "': " attr(publisher) "]";
+}
+cite-web:not(:defined)[date]::after {
+  counter-increment: citation;
+  content: "['" attr(name) "': " attr(date) "]";
+}
+cite-web:not(:defined)[author]::after {
+  counter-increment: citation;
+  content: "['" attr(name) "': " attr(author) "]";
+}
+cite-web:not(:defined):not([author])[publisher][date]::after {
+  counter-increment: citation;
+  content: "['" attr(name) "': " attr(publisher) ", " attr(date) "]";
+}
+cite-web:not(:defined)[author][date]::after {
+  counter-increment: citation;
+  content: "['" attr(name) "': " attr(author) ", " attr(date) "]";
+}
+cite-web:not(:defined)[name]:not([title], [author], [url])::after {
+  content: "['" attr(name) "']";
+}
+
+references-list:not(:defined)::after {
+  content: "Reference list cannot be generated without JavaScript";
+}
