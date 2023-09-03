@@ -17,5 +17,4 @@ that might change
 
 ## TODO
 
-* Implemenet cute '↑' thing that Wikipedia does on references list;
 * If a user comes to the page with `#refXX` already set, perhaps take them to the reference?
