@@ -18,3 +18,7 @@ that might change
 ## TODO
 
 * If a user comes to the page with `#refXX` already set, perhaps take them to the reference?
+
+## More
+
+Check out Max Bo's [bibhtml](https://maxbo.me/celine/bibhtml/), from the [celine](https://github.com/MaxwellBo/celine) project!
